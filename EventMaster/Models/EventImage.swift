@@ -3,5 +3,6 @@ struct EventImage: Decodable, Hashable {
     let url: String
     let width: Int?
     let height: Int?
+    let fallback: Bool
 }
 

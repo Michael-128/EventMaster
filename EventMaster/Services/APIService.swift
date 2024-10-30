@@ -27,8 +27,8 @@ class APIService {
         return data
     }
 
-    func fetchEvents() async throws -> [Event] {
-        let data = try await fetch("\(baseURL)/discovery/v2/events.json", [URLQueryItem(name: "countryCode", value: "PL")])
+    func fetchEvents(page: Int = 0) async throws -> [Event] {
+        let data = try await fetch("\(baseURL)/discovery/v2/events.json", [URLQueryItem(name: "countryCode", value: "PL"), URLQueryItem(name: "page", value: "\(page)")])
         return try JSONDecoder().decode(EventsResponse.self, from: data).events
     }
 

@@ -34,4 +34,13 @@ class CustomDateFormatter {
             ))
         }
     }
+    
+    func formatTime(time: String) -> String {
+        let lastColonIndex = time.lastIndex(of: ":")
+        
+        let startIndex = time.index(time.startIndex, offsetBy: 0)
+        let endIndex = time.index(lastColonIndex!, offsetBy: -1)
+        
+        return String(time[startIndex...endIndex])
+    }
 }

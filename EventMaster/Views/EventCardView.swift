@@ -9,26 +9,8 @@ struct EventCardView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            AsyncImage(url: viewModel.eventPreviewImageURL) { imageView in
-                imageView
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(maxWidth: .infinity, maxHeight: 200)
-                    .clipped()
-                    .background(viewModel.imageBackground)
-            } placeholder: {
-                VStack {
-                    Spacer()
-                    HStack {
-                        Spacer()
-                        ProgressView()
-                        Spacer()
-                    }
-                    Spacer()
-                }
-                    .frame(maxWidth: .infinity, maxHeight: 200)
-                    .frame(height: 200)
-                    .background(viewModel.imageBackground)
+            if let eventPreviewImageURL = viewModel.eventPreviewImageURL {
+                AsyncImageView(url: eventPreviewImageURL, background: viewModel.imageBackground)
             }
             
             VStack(alignment: .leading, spacing: 8) {
@@ -36,9 +18,10 @@ struct EventCardView: View {
                     .font(.headline)
                 
                 Group {
-                    Label(viewModel.eventDate ?? "no_date", systemImage: "calendar")
-                    Label(viewModel.eventCity ?? "no_city", systemImage: "building.2")
-                    Label(viewModel.eventVenue ?? "no_venue", systemImage: "mappin.and.ellipse")
+                    if let eventDate = viewModel.eventDate { Label(eventDate, systemImage: "calendar") }
+                    if let eventCity = viewModel.eventCity { Label(eventCity, systemImage: "building.2") }
+                    if let eventVenue = viewModel.eventVenue { Label(eventVenue, systemImage: "mappin.and.ellipse") }
+                    
                 }
                     .font(.caption)
                     .foregroundStyle(viewModel.textColor)
@@ -47,6 +30,5 @@ struct EventCardView: View {
         }
         .background(viewModel.textBackground)
         .cornerRadius(10)
-        //.shadow(radius: 2)
     }
-} 
+}

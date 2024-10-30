@@ -17,20 +17,34 @@ class EventCardViewModel: ObservableObject {
     @Published public var textColor: Color = .primary.opacity(0.85)
     
     init(event: Event) {
-        do {
-            self.eventId = event.id
-            self.eventName = event.name
-            self.eventDate = try CustomDateFormatter.shared.formatFromISO(date: event.dates.start.localDate)
-            if let eventVenue = event._embedded.venues.first {
-                self.eventCity = eventVenue.city.name
-                self.eventVenue = eventVenue.name
-            }
-            if let eventPreviewImage = event.images.first {
-                self.eventPreviewImageURL = URL(string: eventPreviewImage.url)
-            }
-        } catch {
-            print("Error: \(error)")
+        self.eventId = event.id
+        self.eventName = event.name
+        self.eventDate = fetchEventDate(from: event)
+        self.eventCity = fetchEventCity(from: event)
+        self.eventVenue = fetchEventVenue(from: event)
+        self.eventPreviewImageURL = fetchPreviewImageURL(from: event)
+    }
+    
+    private func fetchEventDate(from event: Event) -> String? {
+        return try? CustomDateFormatter.shared.formatFromISO(date: event.dates.start.localDate)
+    }
+
+    private func fetchEventCity(from event: Event) -> String? {
+        return event._embedded.venues.first?.city.name
+    }
+
+    private func fetchEventVenue(from event: Event) -> String? {
+        return event._embedded.venues.first?.name
+    }
+
+    private func fetchPreviewImageURL(from event: Event) -> URL? {
+        let sortedImages = event.images.sorted(by: { ($0.width ?? 0) > ($1.width ?? 0) })
+        
+        if let preferredImage = sortedImages.first(where: { $0.ratio == "16_9" && !$0.fallback }) {
+            return URL(string: preferredImage.url)
+        } else if let fallbackImage = sortedImages.first {
+            return URL(string: fallbackImage.url)
         }
+        return nil
     }
 }
-

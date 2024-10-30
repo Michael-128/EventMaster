@@ -4,22 +4,45 @@ class EventListViewModel: ObservableObject {
     let apiService = APIService.shared
     
     @Published public var events: [Event] = []
+    @Published public var paginationStatus: PaginationStatus = .ready
+    private var nextPage = 0
     
     init() {
+        fetchEvents()
+    }
+    
+    func fetchEvents() {
+        guard paginationStatus == .ready || paginationStatus == .noMoreData else { return }
+        
+        paginationStatus = .isLoading
+        loadEvents()
+    }
+    
+    private func loadEvents() {
         Task {
-            await self.refreshEvents()
+            do {
+                let newEvents = try await apiService.fetchEvents(page: nextPage)
+                await handleSuccess(with: newEvents)
+            } catch {
+                await handleError(error)
+            }
         }
     }
     
-    func refreshEvents() async {
-        do {
-            let fetchedEvents = try await self.apiService.fetchEvents()
-
-            await MainActor.run {
-                self.events = fetchedEvents
-            }
-        } catch {
-            print("Error fetching events: \(error)")
-        }
+    @MainActor
+    private func handleSuccess(with fetchedEvents: [Event]) {
+        self.events.append(contentsOf: fetchedEvents)
+        nextPage += 1
+        paginationStatus = fetchedEvents.isEmpty ? .noMoreData : .ready
     }
+    
+    @MainActor
+    private func handleError(_ error: Error) {
+        print("Error fetching events: \(error)")
+        paginationStatus = .error
+    }
+}
+
+enum PaginationStatus {
+    case ready, isLoading, noMoreData, error
 }
