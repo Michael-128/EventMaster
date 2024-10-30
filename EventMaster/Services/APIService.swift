@@ -4,7 +4,7 @@ class APIService {
     public static let shared = APIService()
     
     private let baseURL = "https://app.ticketmaster.com"
-    private let apiKey = Environment.apiKey
+    private let apiKey = AppEnvironment.apiKey
 
     private func fetch(_ url: String, _ queryItems: [URLQueryItem] = []) async throws -> Data {
         guard let url = URL(string: url) else {
@@ -15,7 +15,7 @@ class APIService {
             throw URLError(.badURL)
         }
 
-        components.queryItems = [URLQueryItem(name: "apikey", value: apiKey)] + queryItems
+        components.queryItems = [URLQueryItem(name: "apikey", value: apiKey), URLQueryItem(name: "locale", value: "pl,en")] + queryItems
         components.percentEncodedQuery = components.percentEncodedQuery?.replacingOccurrences(of: "+", with: "%2B")
 
         guard let url = components.url else {

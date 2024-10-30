@@ -6,16 +6,17 @@ struct EventListView: View {
     var body: some View {
         VStack {
             NavigationView {
-                List {
-                    ForEach(viewModel.events, id: \.id) {
-                        event in
-                        VStack {
-                            AsyncImage(url: URL(string: event.images[0].url))
-                            Text("\(event.name)")
-                        }
+                ScrollView {
+                    ForEach(viewModel.events, id: \.id) { event in
+                        NavigationLink {
+                            EventDetailsView(event: event)
+                        } label: {
+                            EventCardView(event: event)
+                                .padding(.horizontal)
+                                .padding(.vertical, 8)
+                        }.buttonStyle(PlainButtonStyle())
                     }
                 }
-                .listStyle(.plain)
                 .navigationTitle("Wydarzenia")
             }
         }

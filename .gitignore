@@ -18,6 +18,11 @@ xcuserdata/
 *.xcworkspace
 !default.xcworkspace
 
+# Xcode Scheme (contains sensitive data)
+##
+*.xcscheme
+xcshareddata/xcschemes/*
+
 # Swift Package Manager
 ##
 .build/
@@ -74,7 +79,3 @@ Thumbs.db
 *.ipa
 *.dSYM.zip
 *.dSYM
-
-# Xcode Scheme (contains sensitive data)
-*.xcscheme
-xcshareddata/xcschemes/*

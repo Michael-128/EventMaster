@@ -2,7 +2,7 @@ struct Event: Decodable {
     let id: String
     let name: String
     let dates: Dates
-    let images: [Image]
+    let images: [EventImage]
     let priceRanges: [PriceRange]?
     let seatmap: Seatmap?
     let _embedded: Embedded
@@ -14,13 +14,6 @@ struct Event: Decodable {
             let localDate: String
             let localTime: String?
         }
-    }
-
-    struct Image: Decodable {
-        let ratio: String?
-        let url: String
-        let width: Int?
-        let height: Int?
     }
 
     struct PriceRange: Decodable {
