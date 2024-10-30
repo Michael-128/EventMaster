@@ -5,11 +5,18 @@ struct EventListView: View {
     
     var body: some View {
         VStack {
-            List {
-                ForEach(viewModel.events, id: \.id) {
-                    event in
-                    Text("\(event.name)")
+            NavigationView {
+                List {
+                    ForEach(viewModel.events, id: \.id) {
+                        event in
+                        VStack {
+                            AsyncImage(url: URL(string: event.images[0].url))
+                            Text("\(event.name)")
+                        }
+                    }
                 }
+                .listStyle(.plain)
+                .navigationTitle("Wydarzenia")
             }
         }
     }

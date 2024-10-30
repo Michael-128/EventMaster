@@ -1,66 +1,73 @@
 struct Event: Decodable {
     let id: String
     let name: String
-    let performer: String
-    let date: String //dd.MM.yyyy
-    let time: String? //HH:mm
-    let dateTime: String // remeber to merge date and time HH:mm dd.MM.yyyy
-    let venues: [Venue]
-    let genre: String
-    let priceRanges: [PriceRange]
-    let images: [EventImage]
-    let seatMapImage: String?
+    let dates: Dates
+    let images: [Image]
+    let priceRanges: [PriceRange]?
+    let seatmap: Seatmap?
+    let _embedded: Embedded
 
-    enum OuterKeys: String, CodingKey {
-        case id, name, dates, images, priceRanges, seatmap, embedded = "_embedded"
+    struct Dates: Decodable {
+        let start: Start
+
+        struct Start: Decodable {
+            let localDate: String
+            let localTime: String?
+        }
     }
 
-    enum SeatmapKeys: String, CodingKey {
-        case staticUrl
+    struct Image: Decodable {
+        let ratio: String?
+        let url: String
+        let width: Int?
+        let height: Int?
     }
 
-    enum DatesKeys: String, CodingKey {
-        case start
+    struct PriceRange: Decodable {
+        let type: String
+        let currency: String
+        let min: Double
+        let max: Double
     }
 
-    enum StartKeys: String, CodingKey {
-        case localDate, localTime
+    struct Seatmap: Decodable {
+        let staticUrl: String?
     }
 
-    enum EmbeddedKeys: String, CodingKey {
-        case venues, attractions
-    }
+    struct Embedded: Decodable {
+        let venues: [Venue]
+        let attractions: [Attraction]
 
-    init(from decoder: Decoder) throws {
-        let outerContainer = try decoder.container(keyedBy: OuterKeys.self)
-        let datesContainer = try outerContainer.nestedContainer(keyedBy: DatesKeys.self, forKey: .dates)
-        let startContainer = try datesContainer.nestedContainer(keyedBy: StartKeys.self, forKey: .start)
-        let embeddedContainer = try outerContainer.nestedContainer(keyedBy: EmbeddedKeys.self, forKey: .embedded)
-        if outerContainer.contains(.seatmap) {
-            let seatmapContainer = try outerContainer.nestedContainer(keyedBy: SeatmapKeys.self, forKey: .seatmap)
-            self.seatMapImage = try seatmapContainer.decodeIfPresent(String.self, forKey: .staticUrl)
-        } else {
-            self.seatMapImage = nil
+        struct Venue: Decodable {
+            let name: String
+            let city: City
+            let country: Country
+            let address: Address
+            
+            struct City: Decodable {
+                let name: String
+            }
+
+            struct Country: Decodable {
+                let name: String
+            }
+
+            struct Address: Decodable {
+                let line1: String
+            }
         }
 
-        let attraction = try embeddedContainer.decode([Attraction].self, forKey: .attractions).first
-        let date = try startContainer.decode(String.self, forKey: .localDate)
-        let time = try startContainer.decodeIfPresent(String.self, forKey: .localTime)
-        let priceRanges = try outerContainer.decodeIfPresent([PriceRange].self, forKey: .priceRanges)
+        struct Attraction: Decodable {
+            let name: String
+            let classifications: [Classification]
 
-        self.id = try outerContainer.decode(String.self, forKey: .id)
-        self.name = try outerContainer.decode(String.self, forKey: .name)
-        self.venues = try embeddedContainer.decode([Venue].self, forKey: .venues)
-        self.images = try outerContainer.decode([EventImage].self, forKey: .images)
-        self.priceRanges = priceRanges ?? []
-        self.performer = attraction?.name ?? "Nieznany"
-        self.genre = attraction?.classifications.first?.genre.name ?? "Nieznany"
-        self.date = try CustomDateFormatter.shared.formatFromISO(date: date)
-        self.time = time
-        if let time = time {
-            self.dateTime = try CustomDateFormatter.shared.formatFromISO(date: date, time: time)
-        } else {
-            self.dateTime = date
+            struct Classification: Decodable {
+                let genre: Genre
+
+                struct Genre: Decodable {
+                    let name: String
+                }   
+            }
         }
     }
 }

@@ -4,7 +4,7 @@ class APIService {
     public static let shared = APIService()
     
     private let baseURL = "https://app.ticketmaster.com"
-    private let apiKey = "API_KEY"
+    private let apiKey = Environment.apiKey
 
     private func fetch(_ url: String, _ queryItems: [URLQueryItem] = []) async throws -> Data {
         guard let url = URL(string: url) else {

@@ -6,18 +6,20 @@ class EventListViewModel: ObservableObject {
     @Published public var events: [Event] = []
     
     init() {
-        self.refreshEvents()
+        Task {
+            await self.refreshEvents()
+        }
     }
     
-    func refreshEvents() {
-        DispatchQueue.main.async {
-            Task {
-                do {
-                    self.events = try await self.apiService.fetchEvents()
-                } catch {
-                    print(error)
-                }
+    func refreshEvents() async {
+        do {
+            let fetchedEvents = try await self.apiService.fetchEvents()
+
+            await MainActor.run {
+                self.events = fetchedEvents
             }
+        } catch {
+            print("Error fetching events: \(error)")
         }
     }
 }
