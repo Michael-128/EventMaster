@@ -64,7 +64,7 @@ class EventDetailsViewModel: ObservableObject {
     }
     
     private func fetchPerformer(from event: Event) -> String? {
-        return event._embedded.attractions.first?.name
+        return event._embedded.attractions?.first?.name
     }
 
     private func fetchEventDate(from event: Event) -> String? {
@@ -77,23 +77,23 @@ class EventDetailsViewModel: ObservableObject {
     }
 
     private func fetchCountry(from event: Event) -> String? {
-        return event._embedded.venues.first?.country.name
+        return event._embedded.venues?.first?.country?.name
     }
 
     private func fetchCity(from event: Event) -> String? {
-        return event._embedded.venues.first?.city.name
+        return event._embedded.venues?.first?.city?.name
     }
 
     private func fetchVenue(from event: Event) -> String? {
-        return event._embedded.venues.first?.name
+        return event._embedded.venues?.first?.name
     }
 
     private func fetchAddress(from event: Event) -> String? {
-        return event._embedded.venues.first?.address.line1
+        return event._embedded.venues?.first?.address?.line1
     }
 
     private func fetchGenre(from event: Event) -> String? {
-        return event._embedded.attractions.first?.classifications.first?.genre.name
+        return event._embedded.attractions?.first?.classifications?.first?.genre?.name
     }
 
     private func fetchPriceRange(from event: Event) -> String? {

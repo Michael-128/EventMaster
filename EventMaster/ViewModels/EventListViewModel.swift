@@ -7,7 +7,7 @@ class EventListViewModel: ObservableObject {
     @Published public var paginationStatus: PaginationStatus = .ready
     
     @Published public var sortOption: SortOption = .relevance
-    @Published public var isAscending: Bool = true
+    @Published public var isAscending: Bool = false
     
     
     private var nextPage = 0
@@ -26,7 +26,7 @@ class EventListViewModel: ObservableObject {
     private func loadEvents() {
         Task {
             do {
-                let newEvents = try await apiService.fetchEvents(page: nextPage)
+                let newEvents = try await apiService.fetchEvents(page: nextPage, sort: getSortOption())
                 await handleSuccess(with: newEvents)
             } catch {
                 await handleError(error)
@@ -55,6 +55,7 @@ class EventListViewModel: ObservableObject {
         events = []
         nextPage = 0
         paginationStatus = .ready
+        fetchEvents()
     }
     
     public func getSortOption() -> String {
@@ -68,16 +69,12 @@ enum PaginationStatus {
     case ready, isLoading, noMoreData, error
 }
 
-enum SortOption: String {
+enum SortOption: String, CaseIterable {
+    case relevance = "relevance"
     case name = "name"
     case date = "date"
-    case relevance = "relevance"
-    case distance = "distance"
     case nameDate = "name,date"
     case dateName = "date,name"
-    case distanceDate = "distance,date"
-    case onSaleStartDate = "onSaleStartDate"
-    case id = "id"
     case venueName = "venueName"
     case random = "random"
     
@@ -86,12 +83,8 @@ enum SortOption: String {
         case .name: return "Nazwa"
         case .date: return "Data"
         case .relevance: return "Trafność"
-        case .distance: return "Odległość"
         case .nameDate: return "Nazwa i Data"
         case .dateName: return "Data i Nazwa"
-        case .distanceDate: return "Odległość i Data"
-        case .onSaleStartDate: return "Data rozpoczęcia sprzedaży"
-        case .id: return "ID"
         case .venueName: return "Nazwa miejsca"
         case .random: return "Losowo"
         }

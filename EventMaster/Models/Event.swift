@@ -28,14 +28,14 @@ struct Event: Decodable {
     }
 
     struct Embedded: Decodable {
-        let venues: [Venue]
-        let attractions: [Attraction]
+        let venues: [Venue]?
+        let attractions: [Attraction]?
 
         struct Venue: Decodable {
             let name: String
-            let city: City
-            let country: Country
-            let address: Address
+            let city: City?
+            let country: Country?
+            let address: Address?
             
             struct City: Decodable {
                 let name: String
@@ -46,16 +46,16 @@ struct Event: Decodable {
             }
 
             struct Address: Decodable {
-                let line1: String
+                let line1: String?
             }
         }
 
         struct Attraction: Decodable {
             let name: String
-            let classifications: [Classification]
+            let classifications: [Classification]?
 
             struct Classification: Decodable {
-                let genre: Genre
+                let genre: Genre?
 
                 struct Genre: Decodable {
                     let name: String

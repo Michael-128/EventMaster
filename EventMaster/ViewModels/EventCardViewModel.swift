@@ -30,11 +30,11 @@ class EventCardViewModel: ObservableObject {
     }
 
     private func fetchEventCity(from event: Event) -> String? {
-        return event._embedded.venues.first?.city.name
+        return event._embedded.venues?.first?.city?.name
     }
 
     private func fetchEventVenue(from event: Event) -> String? {
-        return event._embedded.venues.first?.name
+        return event._embedded.venues?.first?.name
     }
 
     private func fetchPreviewImageURL(from event: Event) -> URL? {
