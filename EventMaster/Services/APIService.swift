@@ -1,6 +1,6 @@
 import Foundation
 
-class APIService {
+class APIService: APIServiceProtocol {
     public static let shared = APIService()
     
     private let baseURL = "https://app.ticketmaster.com"
@@ -27,8 +27,8 @@ class APIService {
         return data
     }
 
-    func fetchEvents(page: Int = 0) async throws -> [Event] {
-        let data = try await fetch("\(baseURL)/discovery/v2/events.json", [URLQueryItem(name: "countryCode", value: "PL"), URLQueryItem(name: "page", value: "\(page)")])
+    func fetchEvents(page: Int = 0, sort: String = "relevance,desc") async throws -> [Event] {
+        let data = try await fetch("\(baseURL)/discovery/v2/events.json", [URLQueryItem(name: "countryCode", value: "PL"), URLQueryItem(name: "page", value: "\(page)"), URLQueryItem(name: "sort", value: sort)])
         return try JSONDecoder().decode(EventsResponse.self, from: data).events
     }
 

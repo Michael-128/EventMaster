@@ -30,5 +30,10 @@ struct EventCardView: View {
         }
         .background(viewModel.textBackground)
         .cornerRadius(10)
+        .background(
+            RoundedRectangle(cornerRadius: 10)
+                .fill(.background)
+                .shadow(color: .black.opacity(0.1), radius: 3) 
+        )
     }
 }

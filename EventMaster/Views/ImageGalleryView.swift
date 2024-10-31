@@ -6,7 +6,7 @@ struct ImageIndex: Identifiable {
 }
 
 struct ImageGalleryView: View {
-    @State public var eventImages: [EventImage]
+    @Binding public var eventImages: [EventImage]
     @State private var selectedImageIndex: ImageIndex?
     
     var body: some View {

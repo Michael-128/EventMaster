@@ -2,7 +2,7 @@ import SwiftUI
 
 class EventDetailsViewModel: ObservableObject {
     @Published public var eventId: String
-    @Published public var eventName: String
+    @Published public var eventName: String?
     @Published public var eventPerformer: String?
     @Published public var eventDate: String?
     @Published public var eventTime: String?
@@ -14,8 +14,10 @@ class EventDetailsViewModel: ObservableObject {
     @Published public var eventPriceRange: String?
     @Published public var eventImages: [EventImage] = []
     @Published public var eventSeatMap: URL?
+    
+    @Published public var fetchStatus: FetchStatus = .isLoading
 
-    init(event: Event) {
+    /*init(event: Event) {
         self.eventId = event.id
         self.eventName = event.name
         self.eventPerformer = fetchPerformer(from: event)
@@ -29,6 +31,36 @@ class EventDetailsViewModel: ObservableObject {
         self.eventPriceRange = fetchPriceRange(from: event)
         self.eventImages = event.images
         self.eventSeatMap = fetchSeatMapURL(from: event)
+    }*/
+    
+    init(eventId: String) {
+        self.eventId = eventId
+    }
+    
+    func fetchEventDetails() async {
+        do {
+            let event = try await APIService.shared.fetchEventDetails(id: self.eventId)
+            
+            DispatchQueue.main.async {
+                self.eventName = event.name
+                self.eventPerformer = self.fetchPerformer(from: event)
+                self.eventDate = self.fetchEventDate(from: event)
+                self.eventTime = self.fetchEventTime(from: event)
+                self.eventCountry = self.fetchCountry(from: event)
+                self.eventCity = self.fetchCity(from: event)
+                self.eventVenue = self.fetchVenue(from: event)
+                self.eventAddress = self.fetchAddress(from: event)
+                self.eventGenre = self.fetchGenre(from: event)
+                self.eventPriceRange = self.fetchPriceRange(from: event)
+                self.eventImages = event.images
+                self.eventSeatMap = self.fetchSeatMapURL(from: event)
+                self.fetchStatus = .ready
+            }
+        } catch {
+            print("Error fetching event details: \(error)")
+            fetchStatus = .error
+            //await self.dismiss()
+        }
     }
     
     private func fetchPerformer(from event: Event) -> String? {
@@ -65,15 +97,18 @@ class EventDetailsViewModel: ObservableObject {
     }
 
     private func fetchPriceRange(from event: Event) -> String? {
-        guard let priceRange = event.priceRanges?.first else { return nil }
+        guard let priceRange = event.priceRanges?.first(where: { $0.type.contains("including fees") }) ?? event.priceRanges?.first else { return nil }
         let minPrice = Int(priceRange.min.rounded())
         let maxPrice = Int(priceRange.max.rounded())
         
+        var priceRangeString = ""
         if priceRange.min == priceRange.max {
-            return "\(minPrice) \(priceRange.currency)"
+            priceRangeString = "\(minPrice) \(priceRange.currency)"
         } else {
-            return "Od \(minPrice) \(priceRange.currency) do \(maxPrice) \(priceRange.currency)"
+            priceRangeString = "\(minPrice)-\(maxPrice) \(priceRange.currency)"
         }
+        
+        return priceRange.type.contains("including fees") ? priceRangeString + " (opłaty wliczone)" : priceRangeString
     }
 
     private func fetchSeatMapURL(from event: Event) -> URL? {
@@ -88,4 +123,8 @@ class EventDetailsViewModel: ObservableObject {
         if let eventAddress = eventAddress { location.append(eventAddress.trimmingCharacters(in: .whitespacesAndNewlines)) }
         return location.joined(separator: ", ")
     }
+}
+
+enum FetchStatus {
+    case ready, isLoading, error
 }

@@ -11,6 +11,7 @@ struct EventListView: View {
                         ForEach(viewModel.events, id: \.id) { event in
                             NavigationLink {
                                 EventDetailsView(event: event)
+                                    .navigationTitle("Szczegóły")
                             } label: {
                                 EventCardView(event: event)
                                     .padding(.horizontal)
