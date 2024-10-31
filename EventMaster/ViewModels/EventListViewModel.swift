@@ -20,10 +20,7 @@ class EventListViewModel: ObservableObject {
         guard paginationStatus == .ready || paginationStatus == .noMoreData else { return }
         
         paginationStatus = .isLoading
-        loadEvents()
-    }
-    
-    private func loadEvents() {
+
         Task {
             do {
                 let newEvents = try await apiService.fetchEvents(page: nextPage, sort: getSortOption())
@@ -47,7 +44,6 @@ class EventListViewModel: ObservableObject {
         paginationStatus = .error
     }
     
-    @MainActor
     public func setSortOption(_ sort: SortOption) {
         if(sortOption == sort && sort.allowedDescending) { isAscending.toggle() }
         else { sortOption = sort; isAscending = true }

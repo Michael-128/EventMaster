@@ -14,26 +14,28 @@ struct EventCardView: View {
             }
             
             VStack(alignment: .leading, spacing: 8) {
-                Text(viewModel.eventName)
-                    .font(.headline)
+                Text(viewModel.eventName).font(.headline)
                 
                 Group {
-                    if let eventDate = viewModel.eventDate { Label(eventDate, systemImage: "calendar") }
-                    if let eventCity = viewModel.eventCity { Label(eventCity, systemImage: "building.2") }
-                    if let eventVenue = viewModel.eventVenue { Label(eventVenue, systemImage: "mappin.and.ellipse") }
+                    if let eventDate = viewModel.eventDate { customLabel(eventDate, systemImage: "calendar") }
+                    if let eventCity = viewModel.eventCity { customLabel(eventCity, systemImage: "building.2") }
+                    if let eventVenue = viewModel.eventVenue { customLabel(eventVenue, systemImage: "mappin.and.ellipse") }
                     
-                }
-                    .font(.caption)
-                    .foregroundStyle(viewModel.textColor)
-            }
-            .padding(12)
-        }
-        .background(viewModel.textBackground)
+                }.foregroundStyle(viewModel.textColor)
+            }.padding(12)
+        }.background(viewModel.textBackground)
         .cornerRadius(10)
         .background(
             RoundedRectangle(cornerRadius: 10)
                 .fill(.background)
                 .shadow(color: .black.opacity(0.1), radius: 3) 
         )
+    }
+    
+    func customLabel(_ text: String, systemImage: String) -> some View {
+        HStack {
+            Image(systemName: systemImage).foregroundStyle(.accent)
+            Text(text)
+        }
     }
 }

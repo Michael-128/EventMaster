@@ -7,7 +7,3 @@ struct ContentView: View {
         EventListView()
     }
 }
-
-#Preview {
-    ContentView()
-}
