@@ -16,6 +16,17 @@ class CustomDateFormatter {
             throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: [], debugDescription: "Date format is invalid"))
         }
     }
+    
+    func dateFromISO(date: String) throws -> Date? {
+        let inputFormatter = DateFormatter()
+        inputFormatter.dateFormat = "yyyy-MM-dd"
+        
+        if let parsedDate = inputFormatter.date(from: date) {
+            return parsedDate
+        }
+        
+        return nil
+    }
 
     func formatFromISO(date: String, time: String) throws -> String {
         let inputFormatter = DateFormatter()
@@ -33,6 +44,17 @@ class CustomDateFormatter {
                 debugDescription: "Date format is invalid"
             ))
         }
+    }
+    
+    func dateFromISO(date: String, time: String) throws -> Date? {
+        let inputFormatter = DateFormatter()
+        inputFormatter.dateFormat = "HH:mm yyyy-MM-dd"
+        
+        if let parsedDate = inputFormatter.date(from: "\(time) \(date)") {
+            return parsedDate
+        }
+        
+        return nil
     }
     
     func formatTime(time: String) -> String {

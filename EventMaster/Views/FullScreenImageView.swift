@@ -1,8 +1,10 @@
 import SwiftUI
 
 struct FullScreenImageView: View {
+    @Environment(\.dismiss) var dismiss
     public let images: [EventImage]
     @State public var selectedIndex: Int
+    @State private var isVerticalDismiss: Bool = false
 
     var body: some View {
         ZStack {
@@ -20,15 +22,19 @@ struct FullScreenImageView: View {
                             ProgressView()
                         }
                         .tag(index)
+                        .verticalDismiss($isVerticalDismiss)
                     }
                 }
             }
-            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
+            .tabViewStyle(PageTabViewStyle(indexDisplayMode: isVerticalDismiss ?  .never : .automatic))
             .background(Color.black)
             .ignoresSafeArea(.all)
-            .onTapGesture {
-                UIApplication.shared.windows.first?.rootViewController?.dismiss(animated: true)
-            }
+            .onTapGesture { dismiss() }
+            .onAppear { selectedIndex = 0 }
         }
     }
+}
+
+extension View {
+    
 }

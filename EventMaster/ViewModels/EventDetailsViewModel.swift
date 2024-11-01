@@ -1,6 +1,8 @@
 import SwiftUI
+import EventKit
 
 class EventDetailsViewModel: ObservableObject {
+    private var event: Event?
     @Published public var eventId: String
     @Published public var eventName: String?
     @Published public var eventPerformer: String?
@@ -42,6 +44,7 @@ class EventDetailsViewModel: ObservableObject {
             let event = try await APIService.shared.fetchEventDetails(id: self.eventId)
             
             DispatchQueue.main.async {
+                self.event = event
                 self.eventName = event.name
                 self.eventPerformer = self.fetchPerformer(from: event)
                 self.eventDate = self.fetchEventDate(from: event)
@@ -122,6 +125,35 @@ class EventDetailsViewModel: ObservableObject {
         if let eventCity = eventCity { location.append(eventCity.trimmingCharacters(in: .whitespacesAndNewlines)) }
         if let eventAddress = eventAddress { location.append(eventAddress.trimmingCharacters(in: .whitespacesAndNewlines)) }
         return location.joined(separator: ", ")
+    }
+    
+    func getEventDate() -> String? {
+        if let eventDate = self.eventDate, let eventTime = self.eventTime { return "\(eventTime), \(eventDate)" }
+        if let eventDate = self.eventDate { return "\(eventDate)" }
+        return nil
+    }
+    
+    
+    func addEventToCalendar() {
+        guard let eventDate = self.event?.dates.start.localDate else { return }
+        
+        let eventStore = EKEventStore()
+        
+        eventStore.requestAccess(to: .event) { granted, error in
+            if granted {
+                let calendarEvent = EKEvent(eventStore: eventStore)
+                guard let startDate = try? CustomDateFormatter.shared.dateFromISO(date: eventDate) else { return }
+                let endDate = startDate.addingTimeInterval(3600)
+                
+                calendarEvent.title = self.eventName
+                calendarEvent.startDate = startDate
+                calendarEvent.endDate = endDate
+                calendarEvent.calendar = eventStore.defaultCalendarForNewEvents
+                
+                do { try eventStore.save(calendarEvent, span: .thisEvent) }
+                catch { print("Error saving event to calendar: \(error)") }
+            }
+        }
     }
 }
 

@@ -24,9 +24,17 @@ struct EventDetailsView: View {
                 
                 Section(header: Text("Lokalizacja i czas")) {
                     Label(viewModel.getFullLocation(), systemImage: "map")
-                    if let eventVenue = viewModel.eventVenue { Label(eventVenue, systemImage: "location") }
-                    if let eventDate = viewModel.eventDate, let eventTime = viewModel.eventTime { Label("\(eventTime), \(eventDate)", systemImage: "calendar") }
-                    else if let eventDate = viewModel.eventDate { Label("\(eventDate)", systemImage: "calendar") }
+                    if let eventVenue = viewModel.eventVenue { Label(eventVenue, systemImage: "mappin.and.ellipse") }
+                    if let eventDate = viewModel.getEventDate() { Label(eventDate, systemImage: "calendar") }
+                }
+                
+                Section(header: Text("Opcje")) {
+                    Button {
+                        // TODO: Confirmation prompt
+                        //viewModel.addEventToCalendar()
+                    } label: {
+                        Label("Dodaj do kalendarza", systemImage: "calendar.badge.plus")
+                    }
                 }
                 
                 Section(header: Text("Galeria")) {
