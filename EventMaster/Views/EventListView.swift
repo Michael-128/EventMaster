@@ -1,11 +1,20 @@
 import SwiftUI
 
 struct EventListView: View {
-    @ObservedObject var viewModel: EventListViewModel = .init()
+    @ObservedObject var viewModel: EventListViewModel
+    @State private var isLoading: Bool
+    
+    init() {
+        let viewModel: EventListViewModel = .init()
+        self.viewModel = viewModel
+        self.isLoading = viewModel.apiService.apiKey == nil
+    }
     
     var body: some View {
-        VStack {
-            NavigationView {
+        if isLoading {
+            AppLoadingView().askForApiKey(then: { viewModel.fetchEvents(); isLoading = false })
+        } else {
+            NavigationStack {
                 ScrollView {
                     LazyVStack {
                         ForEach(viewModel.events, id: \.id) { event in

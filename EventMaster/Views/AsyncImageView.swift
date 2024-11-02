@@ -13,19 +13,19 @@ struct AsyncImageView: View {
                 .background(background)
         } placeholder: { asyncImagePlaceholder(background) }
     }
-}
-
-func asyncImagePlaceholder(_ background: Color) -> some View {
-    VStack {
-        Spacer()
-        HStack {
+    
+    func asyncImagePlaceholder(_ background: Color) -> some View {
+        VStack {
             Spacer()
-            ProgressView()
+            HStack {
+                Spacer()
+                ProgressView()
+                Spacer()
+            }
             Spacer()
         }
-        Spacer()
+            .frame(maxWidth: .infinity, maxHeight: 200)
+            .frame(height: 200)
+            .background(background)
     }
-        .frame(maxWidth: .infinity, maxHeight: 200)
-        .frame(height: 200)
-        .background(background)
 }

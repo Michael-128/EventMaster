@@ -19,7 +19,8 @@ class EventDetailsViewModel: ObservableObject {
     
     @Published public var fetchStatus: FetchStatus = .isLoading
 
-    /*init(event: Event) {
+    init(event: Event) {
+        self.event = event
         self.eventId = event.id
         self.eventName = event.name
         self.eventPerformer = fetchPerformer(from: event)
@@ -33,7 +34,7 @@ class EventDetailsViewModel: ObservableObject {
         self.eventPriceRange = fetchPriceRange(from: event)
         self.eventImages = event.images
         self.eventSeatMap = fetchSeatMapURL(from: event)
-    }*/
+    }
     
     init(eventId: String) {
         self.eventId = eventId

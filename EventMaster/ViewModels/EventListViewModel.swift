@@ -17,7 +17,7 @@ class EventListViewModel: ObservableObject {
     }
     
     func fetchEvents() {
-        guard paginationStatus == .ready || paginationStatus == .noMoreData else { return }
+        if paginationStatus == .isLoading { return }
         
         paginationStatus = .isLoading
 
