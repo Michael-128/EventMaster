@@ -18,6 +18,7 @@ class EventDetailsViewModel: ObservableObject {
     @Published public var eventSeatMap: URL?
     
     @Published public var fetchStatus: FetchStatus = .isLoading
+    @Published public var calendarAlert: CalendarEventAlert?
 
     init(event: Event) {
         self.event = event
@@ -160,4 +161,11 @@ class EventDetailsViewModel: ObservableObject {
 
 enum FetchStatus {
     case ready, isLoading, error
+}
+
+enum CalendarEventAlert: String, Identifiable {
+    var id: String { String(reflecting: self) }
+    
+    case added = "added"
+    case confirm = "confirm"
 }

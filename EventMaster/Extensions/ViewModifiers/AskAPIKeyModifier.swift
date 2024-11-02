@@ -14,7 +14,7 @@ struct AskAPIKeyModifier: ViewModifier {
             }.alert("Wprowadź klucz API", isPresented: $isApiKeyAlert) {
                 TextField("Klucz API", text: $apiKey)
                 Button("OK", action: { isApiKeyAlert = false; APIService.shared.apiKey = apiKey; onApiKeySet() })
-                Button("Cancel", role: .cancel) { isApiKeyAlert = false }
+                Button("Anuluj", role: .cancel) { isApiKeyAlert = false }
             }
     }
 }

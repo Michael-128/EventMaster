@@ -30,8 +30,7 @@ struct EventDetailsView: View {
                 
                 Section(header: Text("Opcje")) {
                     Button {
-                        // TODO: Confirmation prompt
-                        //viewModel.addEventToCalendar()
+                        viewModel.calendarAlert = .confirm
                     } label: {
                         Label("Dodaj do kalendarza", systemImage: "calendar.badge.plus")
                     }
@@ -47,6 +46,19 @@ struct EventDetailsView: View {
                     }
                 }
             }.listStyle(.insetGrouped)
+                .alert(item: $viewModel.calendarAlert) { item in
+                    switch(item) {
+                    case .confirm:
+                        return Alert(
+                            title: Text("Dodaj do kalendarza"),
+                            message: Text("Wydarzenie zostanie dodane do kalendarza"),
+                            primaryButton: .default(Text("OK"), action: { viewModel.addEventToCalendar(); viewModel.calendarAlert = .added }),
+                            secondaryButton: .default(Text("Anuluj"))
+                        )
+                    case .added:
+                        return Alert(title: Text("Wydarzenie zostało dodane do kalendarza"), dismissButton: .default(Text("OK")))
+                    }
+                }
         }
     }
 }
