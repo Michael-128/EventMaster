@@ -1,5 +1,6 @@
 import XCTest
 
+// Tests performance of scrolling different views to ensure there is no lag or stuttering
 final class ScrollingPerformanceTests: XCTestCase {
 
     private var app: XCUIApplication!

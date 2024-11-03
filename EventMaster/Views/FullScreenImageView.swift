@@ -1,5 +1,6 @@
 import SwiftUI
 
+// This view displays images in fullscreen after tapping them and allows to swipe between pictures
 struct FullScreenImageView: View {
     @Environment(\.dismiss) var dismiss
     public let images: [EventImage]
@@ -22,7 +23,7 @@ struct FullScreenImageView: View {
                             ProgressView()
                         }
                         .tag(index)
-                        .verticalDismiss($isVerticalDismiss)
+                        .verticalDismiss($isVerticalDismiss) // Swipe up or down to dismiss the view
                     }
                 }
             }

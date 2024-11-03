@@ -7,6 +7,7 @@ struct EventCardView: View {
         self.viewModel = EventCardViewModel(event: event)
     }
     
+    // This view is a card including event info such as: preview image, title, date, venue name, city
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             if let eventPreviewImageURL = viewModel.eventPreviewImageURL {
@@ -32,6 +33,7 @@ struct EventCardView: View {
         )
     }
     
+    // Customs label created so that the icon can be displayed with accent color
     func customLabel(_ text: String, systemImage: String) -> some View {
         HStack {
             Image(systemName: systemImage).foregroundStyle(.accent)

@@ -12,6 +12,7 @@ class EventCardViewModel: ObservableObject {
     @Published public var eventVenue: String?
     @Published public var eventPreviewImageURL: URL?
     
+    // Colors for elements of the  card view
     @Published public var imageBackground: Color = .primary.opacity(0.2)
     @Published public var textBackground: Color = .primary.opacity(0.1)
     @Published public var textColor: Color = .primary.opacity(0.85)
@@ -37,6 +38,7 @@ class EventCardViewModel: ObservableObject {
         return event._embedded.venues?.first?.name
     }
 
+    // Tries to get images that has an aspect ratio of 16:9 if available. It prioritizes images with the highest resolution.
     private func fetchPreviewImageURL(from event: Event) -> URL? {
         let sortedImages = event.images.sorted(by: { ($0.width ?? 0) > ($1.width ?? 0) })
         

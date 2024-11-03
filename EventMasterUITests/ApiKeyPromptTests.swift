@@ -1,5 +1,6 @@
 import XCTest
 
+// Tests if the api key promp is displayed when it should appear
 final class ApiKeyPromptTests: XCTestCase {
     override func setUp() {
         continueAfterFailure = true

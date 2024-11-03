@@ -8,6 +8,7 @@ struct EventDetailsView: View {
         self.viewModel = .init(eventId: event.id)
     }
     
+    // This view fetches and displays detailed information about the selected event
     var body: some View {
         if(viewModel.fetchStatus == .isLoading) {
             ProgressView().onAppear() { Task { await viewModel.fetchEventDetails() } }
@@ -31,6 +32,7 @@ struct EventDetailsView: View {
                 
                 Section(header: Text("Akcje")) {
                     Button {
+                        // Display the confirmation alert, before adding event to calendar
                         viewModel.calendarAlert = .confirm
                     } label: {
                         Label("Dodaj do kalendarza", systemImage: "calendar.badge.plus")

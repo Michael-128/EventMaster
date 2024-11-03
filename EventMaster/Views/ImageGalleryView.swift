@@ -5,6 +5,8 @@ struct ImageIndex: Identifiable {
     let value: Int
 }
 
+
+// This view displays a grid of images
 struct ImageGalleryView: View {
     @Binding public var eventImages: [EventImage]
     @State private var selectedImageIndex: ImageIndex?

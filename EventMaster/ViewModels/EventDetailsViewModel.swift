@@ -1,6 +1,7 @@
 import SwiftUI
 import EventKit
 
+// This view handles fetching and loading event details data
 class EventDetailsViewModel: ObservableObject {
     private var event: Event?
     @Published public var eventId: String
@@ -100,6 +101,7 @@ class EventDetailsViewModel: ObservableObject {
         return event._embedded.venues?.first?.address?.line1
     }
     
+    // Fetch venue coordinates, convert them toCLLocationCoordinate2D and return them
     private func fetchCoordinates(from event: Event) -> CLLocationCoordinate2D? {
         guard
             let latitudeString = event._embedded.venues?.first?.location?.latitude,
@@ -116,11 +118,16 @@ class EventDetailsViewModel: ObservableObject {
     }
 
     private func fetchPriceRange(from event: Event) -> String? {
+        // The price ranges with fees included should be prioritized, if no such price range is found, get the first price range on the list
         guard let priceRange = event.priceRanges?.first(where: { $0.type.contains("including fees") }) ?? event.priceRanges?.first else { return nil }
+        
+        // Convert prices to Int
         let minPrice = Int(priceRange.min.rounded())
         let maxPrice = Int(priceRange.max.rounded())
         
         var priceRangeString = ""
+        
+        // If prices are the same there is no point in displaying both
         if priceRange.min == priceRange.max {
             priceRangeString = "\(minPrice) \(priceRange.currency)"
         } else {
@@ -135,6 +142,7 @@ class EventDetailsViewModel: ObservableObject {
         return URL(string: seatMapURL)
     }
     
+    // Returns full location in format: Country, City, Address
     func getFullLocation() -> String {
         var location: [String] = []
         if let eventCountry = eventCountry { location.append(eventCountry.trimmingCharacters(in: .whitespacesAndNewlines)) }
@@ -143,13 +151,14 @@ class EventDetailsViewModel: ObservableObject {
         return location.joined(separator: ", ")
     }
     
+    // Tries to get event date with time, if time is not available it tries to get only the date
     func getEventDate() -> String? {
         if let eventDate = self.eventDate, let eventTime = self.eventTime { return "\(eventTime), \(eventDate)" }
         if let eventDate = self.eventDate { return "\(eventDate)" }
         return nil
     }
     
-    
+    // This function handles adding event to the calendar app
     func addEventToCalendar() {
         guard let eventDate = self.event?.dates.start.localDate else { return }
         
@@ -172,6 +181,7 @@ class EventDetailsViewModel: ObservableObject {
         }
     }
     
+    // This function handles redirect to Apple Maps
     func openLocationInAppleMaps() {
         guard let coordinates = eventCoordinates else { return }
         
@@ -183,6 +193,7 @@ class EventDetailsViewModel: ObservableObject {
     }
 }
 
+// Enum with currect status of the api fetch
 enum FetchStatus {
     case ready, isLoading, error
 }

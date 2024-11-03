@@ -1,5 +1,6 @@
 import SwiftUI
 
+// This view modifier displays a prompt asking for API key if it's not provided
 struct AskAPIKeyModifier: ViewModifier {
     public var onApiKeySet: () -> Void
     

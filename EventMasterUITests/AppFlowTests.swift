@@ -1,5 +1,7 @@
 import XCTest
 
+
+// Tests navigation between views, pagination and prompts
 final class AppFlowTests: XCTestCase {
     
     private var app: XCUIApplication!

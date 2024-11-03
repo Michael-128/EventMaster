@@ -10,6 +10,8 @@ struct EventListView: View {
         self.isLoading = viewModel.apiService.apiKey == nil
     }
     
+    // The view will ask you for an API key if it's not provided already.
+    // Othewise is will display a list of events.
     var body: some View {
         if isLoading {
             AppLoadingView().askForApiKey(then: { viewModel.fetchEvents(); isLoading = false })
@@ -36,6 +38,7 @@ struct EventListView: View {
         }
     }
     
+    // This view handles pagination. If it becomes visible, new items are loaded
     func lastRowView() -> some View {
         ZStack(alignment: .center) {
             switch viewModel.paginationStatus {
@@ -52,6 +55,7 @@ struct EventListView: View {
         .onAppear { viewModel.fetchEvents() }
     }
 
+    // This is a toolbar that contains a menu where you can sort items
     func toolbarMenu() -> some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             Menu {

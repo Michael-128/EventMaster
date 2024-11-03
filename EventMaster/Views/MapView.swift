@@ -6,6 +6,7 @@ struct Location: Identifiable {
     let coordinates: CLLocationCoordinate2D
 }
 
+// This view displays a map from MapKit with the location of the event
 struct MapView: View {
     @State private var region: MKCoordinateRegion
     var locations: [Location] = []

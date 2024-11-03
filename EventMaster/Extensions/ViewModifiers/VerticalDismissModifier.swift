@@ -1,5 +1,6 @@
 import SwiftUI
 
+// This view modifier allows to dismiss a view with animation by swiping up or down.
 struct VerticalDismissModifier: ViewModifier {
     @Environment(\.dismiss) var dismiss
     @State private var offset: CGSize = .zero

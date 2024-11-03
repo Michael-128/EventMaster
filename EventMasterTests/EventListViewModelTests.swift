@@ -23,6 +23,7 @@ final class EventListViewModelTests: XCTestCase {
     func testSetSortOption() throws {
         let viewModel = EventListViewModel()
         
+        // If the same sort option is passed - isAscending should toggle
         viewModel.setSortOption(.name)
         
         XCTAssertTrue(viewModel.sortOption == .name)
@@ -33,6 +34,8 @@ final class EventListViewModelTests: XCTestCase {
         XCTAssertTrue(viewModel.sortOption == .name)
         XCTAssertTrue(viewModel.isAscending == false)
         
+        
+        // If the sort option is set to random, toggling isAscending shouldn't be allowed
         viewModel.setSortOption(.random)
         
         XCTAssertTrue(viewModel.sortOption == .random)

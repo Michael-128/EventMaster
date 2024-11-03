@@ -1,5 +1,6 @@
 import Foundation
 
+// This class handles all of the date formatting in this project
 class CustomDateFormatter {
     static let shared = CustomDateFormatter()
 
@@ -46,10 +47,7 @@ class CustomDateFormatter {
             let formattedDate = outputFormatter.string(from: parsedDate)
             return "\(formatTime(time: time)), \(formattedDate)"
         } else {
-            throw DecodingError.dataCorrupted(DecodingError.Context(
-                codingPath: [],
-                debugDescription: "Date format is invalid"
-            ))
+            throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: [], debugDescription: "Date format is invalid"))
         }
     }
     
@@ -64,6 +62,7 @@ class CustomDateFormatter {
         return nil
     }
     
+    // This function formats time. The api provides time in format HH:mm:ss, so the function removes everything after the last colon which are the seconds.
     func formatTime(time: String) -> String {
         let lastColonIndex = time.lastIndex(of: ":")
         

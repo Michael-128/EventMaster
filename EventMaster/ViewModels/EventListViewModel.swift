@@ -1,5 +1,6 @@
 import Foundation
 
+// This view model handles the logic behind pagination and sorting in the list view
 class EventListViewModel: ObservableObject {
     let apiService = APIService.shared
     

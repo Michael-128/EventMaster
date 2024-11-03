@@ -1,5 +1,6 @@
 @testable import EventMaster
 
+// Here are some mock events used for testing
 public let mockEvents: [Event] = [
     Event(
         id: "mock1",
