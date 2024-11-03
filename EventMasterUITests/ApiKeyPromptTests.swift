@@ -18,6 +18,7 @@ final class ApiKeyPromptTests: XCTestCase {
     
     func testPromptVisibilityWithoutApiKey() throws {
         let app = XCUIApplication()
+        app.launchEnvironment["API_KEY_LOAD"] = "false"
         app.launch()
         XCTAssertTrue(app.alerts.staticTexts["Wprowadź klucz API"].exists)
     }
