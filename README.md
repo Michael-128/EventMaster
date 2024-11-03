@@ -2,7 +2,7 @@
 
 Interview task for [@miquido](https://github.com/miquido)
 
-This iOS application displays a list of upcoming events in Poland using the Ticketmaster API. Users can view event details, including the date, location, ticket price range, and a gallery of images. The app is developed using SwiftUI, handles networking with Structured Concurrency, and follows a clean, modular architecture.
+This iOS application displays a list of upcoming events in Poland using the Ticketmaster API. Users can view event details, including the date, location, ticket price range, and a gallery of images. The app is developed using SwiftUI, handles networking with Structured Concurrency, and follows a clean, modular architecture (MVVM).
 
 ## Table of Contents
 
@@ -41,8 +41,8 @@ Here are some screenshots of the app to give a quick visual overview:
    - Displays a user-friendly message if network data is unavailable.
    
 4. **Additional Enhancements**:
-   - Sorting options to organize events by date, popularity, etc.
-   - Unit tests for core functionality.
+   - Sorting options to organize events by date, name, etc.
+   - UI & Unit tests for core functionality.
 
 ## Requirements
 
@@ -78,7 +78,7 @@ Here are some screenshots of the app to give a quick visual overview:
 
 ## Architecture
 
-This app follows a modular, clean architecture with a focus on separation of concerns:
+This app follows a modular, clean architecture (MVVM) with a focus on separation of concerns:
 
 - **Networking Layer**: Handles API requests using `URLSession` and `Structured Concurrency`.
 - **ViewModel**: Manages data transformations and state for SwiftUI views.
