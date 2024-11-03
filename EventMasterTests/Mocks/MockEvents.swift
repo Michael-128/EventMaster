@@ -36,7 +36,8 @@ public let mockEvents: [Event] = [
                     name: "Przykładowa Lokalizacja",
                     city: Event.Embedded.Venue.City(name: "Warszawa"),
                     country: Event.Embedded.Venue.Country(name: "Polska"),
-                    address: Event.Embedded.Venue.Address(line1: "123 Przykładowa Ulica")
+                    address: Event.Embedded.Venue.Address(line1: "123 Przykładowa Ulica"),
+                    location: Event.Embedded.Venue.Location(latitude: "50.08418", longitude: "19.99624")
                 )
             ],
             attractions: [
@@ -92,7 +93,8 @@ public let mockEvents: [Event] = [
                     name: "Przykładowe Boisko",
                     city: Event.Embedded.Venue.City(name: "Kraków"),
                     country: Event.Embedded.Venue.Country(name: "Polska"),
-                    address: Event.Embedded.Venue.Address(line1: "456 Ulica")
+                    address: Event.Embedded.Venue.Address(line1: "456 Ulica"),
+                    location: nil
                 )
             ],
             attractions: [

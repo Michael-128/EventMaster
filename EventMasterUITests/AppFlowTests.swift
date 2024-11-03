@@ -24,10 +24,14 @@ final class AppFlowTests: XCTestCase {
     
     func testEventAddToCalendar() throws {
         app.scrollViews.otherElements.buttons.firstMatch.tap()
+        app.swipeUp()
         app.collectionViews/*@START_MENU_TOKEN@*/.staticTexts["Dodaj do kalendarza"]/*[[".cells",".buttons[\"Dodaj do kalendarza\"].staticTexts[\"Dodaj do kalendarza\"]",".staticTexts[\"Dodaj do kalendarza\"]"],[[[-1,2],[-1,1],[-1,0,1]],[[-1,2],[-1,1]]],[0]]@END_MENU_TOKEN@*/.tap()
         app.alerts["Dodaj do kalendarza"].scrollViews.otherElements.buttons["OK"].tap()
         
-        XCTAssertTrue(app.alerts["Wydarzenie zostało dodane do kalendarza"].exists)
+        
+        let alert = app.alerts["Wydarzenie zostało dodane do kalendarza"].waitForExistence(timeout: 2)
+        
+        XCTAssertTrue(alert)
     }
     
     func testEventSorting() throws {

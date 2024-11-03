@@ -26,13 +26,20 @@ struct EventDetailsView: View {
                     Label(viewModel.getFullLocation(), systemImage: "map")
                     if let eventVenue = viewModel.eventVenue { Label(eventVenue, systemImage: "mappin.and.ellipse") }
                     if let eventDate = viewModel.getEventDate() { Label(eventDate, systemImage: "calendar") }
+                    if let eventCoordinates = viewModel.eventCoordinates { MapView(coordinates: eventCoordinates, eventVenue: viewModel.eventVenue) }
                 }
                 
-                Section(header: Text("Opcje")) {
+                Section(header: Text("Akcje")) {
                     Button {
                         viewModel.calendarAlert = .confirm
                     } label: {
                         Label("Dodaj do kalendarza", systemImage: "calendar.badge.plus")
+                    }
+                    
+                    Button {
+                        viewModel.openLocationInAppleMaps()
+                    } label: {
+                        Label("Otwórz w Mapach Apple", systemImage: "location")
                     }
                 }
                 

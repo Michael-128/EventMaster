@@ -36,6 +36,7 @@ struct Event: Decodable {
             let city: City?
             let country: Country?
             let address: Address?
+            let location: Location?
             
             struct City: Decodable {
                 let name: String
@@ -47,6 +48,11 @@ struct Event: Decodable {
 
             struct Address: Decodable {
                 let line1: String?
+            }
+            
+            struct Location: Decodable {
+                let latitude: String?
+                let longitude: String?
             }
         }
 

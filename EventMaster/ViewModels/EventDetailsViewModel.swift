@@ -12,6 +12,7 @@ class EventDetailsViewModel: ObservableObject {
     @Published public var eventCity: String?
     @Published public var eventVenue: String?
     @Published public var eventAddress: String?
+    @Published public var eventCoordinates: CLLocationCoordinate2D?
     @Published public var eventGenre: String?
     @Published public var eventPriceRange: String?
     @Published public var eventImages: [EventImage] = []
@@ -31,6 +32,7 @@ class EventDetailsViewModel: ObservableObject {
         self.eventCity = fetchCity(from: event)
         self.eventVenue = fetchVenue(from: event)
         self.eventAddress = fetchAddress(from: event)
+        self.eventCoordinates = fetchCoordinates(from: event)
         self.eventGenre = fetchGenre(from: event)
         self.eventPriceRange = fetchPriceRange(from: event)
         self.eventImages = event.images
@@ -55,6 +57,7 @@ class EventDetailsViewModel: ObservableObject {
                 self.eventCity = self.fetchCity(from: event)
                 self.eventVenue = self.fetchVenue(from: event)
                 self.eventAddress = self.fetchAddress(from: event)
+                self.eventCoordinates = self.fetchCoordinates(from: event)
                 self.eventGenre = self.fetchGenre(from: event)
                 self.eventPriceRange = self.fetchPriceRange(from: event)
                 self.eventImages = event.images
@@ -95,6 +98,17 @@ class EventDetailsViewModel: ObservableObject {
 
     private func fetchAddress(from event: Event) -> String? {
         return event._embedded.venues?.first?.address?.line1
+    }
+    
+    private func fetchCoordinates(from event: Event) -> CLLocationCoordinate2D? {
+        guard
+            let latitudeString = event._embedded.venues?.first?.location?.latitude,
+            let latitude = Double(latitudeString),
+            let longitudeString = event._embedded.venues?.first?.location?.longitude,
+            let longitude = Double(longitudeString)
+        else { return nil }
+        
+        return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
     }
 
     private func fetchGenre(from event: Event) -> String? {
@@ -155,6 +169,16 @@ class EventDetailsViewModel: ObservableObject {
                 do { try eventStore.save(calendarEvent, span: .thisEvent) }
                 catch { print("Error saving event to calendar: \(error)") }
             }
+        }
+    }
+    
+    func openLocationInAppleMaps() {
+        guard let coordinates = eventCoordinates else { return }
+        
+        let latitude = coordinates.latitude
+        let longitude = coordinates.longitude
+        if let url = URL(string: "http://maps.apple.com/?q=\(eventVenue ?? "")&daddr=\(latitude),\(longitude)&dirflg=d") {
+            UIApplication.shared.open(url)
         }
     }
 }
