@@ -22,7 +22,7 @@ struct ImageGalleryView: View {
                             .clipped()
                             .onTapGesture {
                                 selectedImageIndex = ImageIndex(value: index)
-                            }
+                            }.accessibilityIdentifier("asyncImage")
                     } placeholder: {
                         Image(systemName: "photo")
                             .background(.gray)
@@ -32,6 +32,6 @@ struct ImageGalleryView: View {
             }
         }).fullScreenCover(item: $selectedImageIndex) { index in
             FullScreenImageView(images: eventImages, selectedIndex: index.value)
-        }
+        }.accessibilityIdentifier("imageGallery")
     }
 }

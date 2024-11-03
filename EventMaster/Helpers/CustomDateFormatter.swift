@@ -3,12 +3,23 @@ import Foundation
 class CustomDateFormatter {
     static let shared = CustomDateFormatter()
 
-    func formatFromISO(date: String) throws -> String {
+    private func getInputFormatter() -> DateFormatter {
         let inputFormatter = DateFormatter()
         inputFormatter.dateFormat = "yyyy-MM-dd"
-
+        inputFormatter.timeZone = TimeZone(identifier: "UTC")
+        return inputFormatter
+    }
+    
+    private func getOutputFormatter() -> DateFormatter {
         let outputFormatter = DateFormatter()
         outputFormatter.dateFormat = "dd.MM.yyyy"
+        outputFormatter.timeZone = TimeZone(identifier: "UTC")
+        return outputFormatter
+    }
+    
+    func formatFromISO(date: String) throws -> String {
+        let inputFormatter = getInputFormatter()
+        let outputFormatter = getOutputFormatter()
 
         if let parsedDate = inputFormatter.date(from: date) {
             return outputFormatter.string(from: parsedDate)
@@ -18,8 +29,7 @@ class CustomDateFormatter {
     }
     
     func dateFromISO(date: String) throws -> Date? {
-        let inputFormatter = DateFormatter()
-        inputFormatter.dateFormat = "yyyy-MM-dd"
+        let inputFormatter = getInputFormatter()
         
         if let parsedDate = inputFormatter.date(from: date) {
             return parsedDate
@@ -29,15 +39,12 @@ class CustomDateFormatter {
     }
 
     func formatFromISO(date: String, time: String) throws -> String {
-        let inputFormatter = DateFormatter()
-        inputFormatter.dateFormat = "yyyy-MM-dd"
-
-        let outputFormatter = DateFormatter()
-        outputFormatter.dateFormat = "dd.MM.yyyy"
+        let inputFormatter = getInputFormatter()
+        let outputFormatter = getOutputFormatter()
 
         if let parsedDate = inputFormatter.date(from: date) {
             let formattedDate = outputFormatter.string(from: parsedDate)
-            return "\(time), \(formattedDate)"
+            return "\(formatTime(time: time)), \(formattedDate)"
         } else {
             throw DecodingError.dataCorrupted(DecodingError.Context(
                 codingPath: [],
@@ -47,7 +54,7 @@ class CustomDateFormatter {
     }
     
     func dateFromISO(date: String, time: String) throws -> Date? {
-        let inputFormatter = DateFormatter()
+        let inputFormatter = getInputFormatter()
         inputFormatter.dateFormat = "HH:mm yyyy-MM-dd"
         
         if let parsedDate = inputFormatter.date(from: "\(time) \(date)") {

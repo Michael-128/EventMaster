@@ -9,8 +9,7 @@ class EventListViewModel: ObservableObject {
     @Published public var sortOption: SortOption = .relevance
     @Published public var isAscending: Bool = false
     
-    
-    private var nextPage = 0
+    var nextPage = 0
     
     init() {
         fetchEvents()
@@ -44,13 +43,17 @@ class EventListViewModel: ObservableObject {
         paginationStatus = .error
     }
     
+    func resetEvents() {
+        events = []
+        nextPage = 0
+        paginationStatus = .ready
+    }
+    
     public func setSortOption(_ sort: SortOption) {
         if(sortOption == sort && sort.allowedDescending) { isAscending.toggle() }
         else { sortOption = sort; isAscending = true }
         
-        events = []
-        nextPage = 0
-        paginationStatus = .ready
+        resetEvents()
         fetchEvents()
     }
     

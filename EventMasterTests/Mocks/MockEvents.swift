@@ -57,7 +57,7 @@ public let mockEvents: [Event] = [
         dates: Event.Dates(
             start: Event.Dates.Start(
                 localDate: "2024-05-20",
-                localTime: "19:30:00"
+                localTime: nil
             )
         ),
         images: [
@@ -71,16 +71,16 @@ public let mockEvents: [Event] = [
         ],
         priceRanges: [
             Event.PriceRange(
-                type: "standard including fees",
-                currency: "PLN",
-                min: 75.0,
-                max: 250.0
-            ),
-            Event.PriceRange(
                 type: "standard",
                 currency: "PLN",
                 min: 50.0,
                 max: 200.0
+            ),
+            Event.PriceRange(
+                type: "standard including fees",
+                currency: "PLN",
+                min: 75.0,
+                max: 250.0
             )
         ],
         seatmap: Event.Seatmap(

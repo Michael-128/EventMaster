@@ -17,9 +17,9 @@ struct EventCardView: View {
                 Text(viewModel.eventName).font(.headline)
                 
                 Group {
-                    if let eventDate = viewModel.eventDate { customLabel(eventDate, systemImage: "calendar") }
-                    if let eventCity = viewModel.eventCity { customLabel(eventCity, systemImage: "building.2") }
-                    if let eventVenue = viewModel.eventVenue { customLabel(eventVenue, systemImage: "mappin.and.ellipse") }
+                    if let eventDate = viewModel.eventDate { customLabel(eventDate, systemImage: "calendar").accessibilityIdentifier("date") }
+                    if let eventCity = viewModel.eventCity { customLabel(eventCity, systemImage: "building.2").accessibilityIdentifier("city") }
+                    if let eventVenue = viewModel.eventVenue { customLabel(eventVenue, systemImage: "mappin.and.ellipse").accessibilityIdentifier("venue") }
                     
                 }.foregroundStyle(viewModel.textColor)
             }.padding(12)

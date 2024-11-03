@@ -48,6 +48,7 @@ struct EventListView: View {
             }
         }
         .frame(height: 50)
+        .accessibilityIdentifier("lastRowView")
         .onAppear { viewModel.fetchEvents() }
     }
 

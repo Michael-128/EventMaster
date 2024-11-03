@@ -19,21 +19,21 @@ class EventCardViewModel: ObservableObject {
     init(event: Event) {
         self.eventId = event.id
         self.eventName = event.name
-        self.eventDate = fetchEventDate(from: event)
-        self.eventCity = fetchEventCity(from: event)
-        self.eventVenue = fetchEventVenue(from: event)
+        self.eventDate = fetchDate(from: event)
+        self.eventCity = fetchCity(from: event)
+        self.eventVenue = fetchVenue(from: event)
         self.eventPreviewImageURL = fetchPreviewImageURL(from: event)
     }
     
-    private func fetchEventDate(from event: Event) -> String? {
+    private func fetchDate(from event: Event) -> String? {
         return try? CustomDateFormatter.shared.formatFromISO(date: event.dates.start.localDate)
     }
 
-    private func fetchEventCity(from event: Event) -> String? {
+    private func fetchCity(from event: Event) -> String? {
         return event._embedded.venues?.first?.city?.name
     }
 
-    private func fetchEventVenue(from event: Event) -> String? {
+    private func fetchVenue(from event: Event) -> String? {
         return event._embedded.venues?.first?.name
     }
 

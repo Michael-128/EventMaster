@@ -25,8 +25,8 @@ class EventDetailsViewModel: ObservableObject {
         self.eventId = event.id
         self.eventName = event.name
         self.eventPerformer = fetchPerformer(from: event)
-        self.eventDate = fetchEventDate(from: event)
-        self.eventTime = fetchEventTime(from: event)
+        self.eventDate = fetchDate(from: event)
+        self.eventTime = fetchTime(from: event)
         self.eventCountry = fetchCountry(from: event)
         self.eventCity = fetchCity(from: event)
         self.eventVenue = fetchVenue(from: event)
@@ -49,8 +49,8 @@ class EventDetailsViewModel: ObservableObject {
                 self.event = event
                 self.eventName = event.name
                 self.eventPerformer = self.fetchPerformer(from: event)
-                self.eventDate = self.fetchEventDate(from: event)
-                self.eventTime = self.fetchEventTime(from: event)
+                self.eventDate = self.fetchDate(from: event)
+                self.eventTime = self.fetchTime(from: event)
                 self.eventCountry = self.fetchCountry(from: event)
                 self.eventCity = self.fetchCity(from: event)
                 self.eventVenue = self.fetchVenue(from: event)
@@ -72,11 +72,11 @@ class EventDetailsViewModel: ObservableObject {
         return event._embedded.attractions?.first?.name
     }
 
-    private func fetchEventDate(from event: Event) -> String? {
+    private func fetchDate(from event: Event) -> String? {
         return try? CustomDateFormatter.shared.formatFromISO(date: event.dates.start.localDate)
     }
 
-    private func fetchEventTime(from event: Event) -> String? {
+    private func fetchTime(from event: Event) -> String? {
         guard let localTime = event.dates.start.localTime else { return nil }
         return CustomDateFormatter.shared.formatTime(time: localTime)
     }
