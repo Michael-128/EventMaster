@@ -55,7 +55,7 @@ Here are some screenshots of the app to give a quick visual overview:
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/yourusername/EventMasters.git
+   git clone https://github.com/Michael-128/EventMasters.git
    cd EventMasters
    ```
 
