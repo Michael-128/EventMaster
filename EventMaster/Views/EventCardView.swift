@@ -15,7 +15,7 @@ struct EventCardView: View {
             }
             
             VStack(alignment: .leading, spacing: 8) {
-                Text(viewModel.eventName).font(.headline).foregroundStyle(.secondary)
+                Text(viewModel.eventName).font(.headline).foregroundStyle(.primary)
                 
                 Group {
                     if let eventDate = viewModel.eventDate { customLabel(eventDate, systemImage: "calendar").accessibilityIdentifier("date") }
